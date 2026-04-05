@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Content Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-pencil-alt"></i> Social Media Content Generator</h1>
+                <p>Generate engaging content for multiple platforms powered by AI</p>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <button class="nav-btn active" data-mode="single" onclick="switchMode('single')">
+                <i class="fas fa-pen-fancy"></i> Single Content
+            </button>
+            <button class="nav-btn" data-mode="multi" onclick="switchMode('multi')">
+                <i class="fas fa-layer-group"></i> Multi-Platform
+            </button>
+            <button class="nav-btn" data-mode="hashtags" onclick="switchMode('hashtags')">
+                <i class="fas fa-hashtag"></i> Hashtags
+            </button>
+            <button class="nav-btn" data-mode="batch" onclick="switchMode('batch')">
+                <i class="fas fa-list"></i> Batch Generate
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content" style="display: block; min-height: 500px;">
+            <!-- Single Content Mode -->
+            <section class="mode-section active" data-mode="single" id="single-mode" style="display: block !important;">
+                <div class="section-header">
+                    <h2>Generate Single Platform Content</h2>
+                    <p>Create optimized content for one social media platform</p>
+                </div>
+
+                <form class="form-group" id="singleForm">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="singleTheme">Theme/Topic</label>
+                            <input type="text" id="singleTheme" placeholder="e.g., sustainable fashion" required>
+                            <small>Enter the topic you want content about</small>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="singleContentType">Content Type</label>
+                            <select id="singleContentType">
+                                <option value="general_content">General Content</option>
+                                <option value="instagram_post">Instagram Post</option>
+                                <option value="twitter_post">Twitter/X Post</option>
+                                <option value="facebook_post">Facebook Post</option>
+                                <option value="linkedin_post">LinkedIn Post</option>
+                                <option value="tiktok_caption">TikTok Caption</option>
+                                <option value="email_subject">Email Subject Lines</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="singleVariations">Variations</label>
+                            <input type="number" id="singleVariations" min="1" max="3" value="1">
+                            <small>Generate multiple versions (1-3)</small>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="generateSingle()">
+                            <i class="fas fa-magic"></i> Generate Content
+                        </button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+
+                <div id="singleResults" class="results-container"></div>
+            </section>
+
+            <!-- Multi-Platform Mode -->
+            <section class="mode-section" data-mode="multi" id="multi-mode">
+                <div class="section-header">
+                    <h2>Generate Multi-Platform Content</h2>
+                    <p>Create optimized content for multiple platforms automatically</p>
+                </div>
+
+                <form class="form-group" id="multiForm">
+                    <div class="form-row">
+                        <div class="form-field full-width">
+                            <label for="multiTheme">Theme/Topic</label>
+                            <input type="text" id="multiTheme" placeholder="e.g., artificial intelligence in healthcare" required>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Select Platforms</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox">
+                                <input type="checkbox" value="instagram_post" checked> Instagram
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="twitter_post" checked> Twitter/X
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="facebook_post" checked> Facebook
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="linkedin_post" checked> LinkedIn
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="tiktok_caption"> TikTok
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="email_subject"> Email
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="generateMultiPlatform()">
+                            <i class="fas fa-broadcast-tower"></i> Generate for All Platforms
+                        </button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+
+                <div id="multiResults" class="results-container"></div>
+            </section>
+
+            <!-- Hashtags Mode -->
+            <section class="mode-section" data-mode="hashtags" id="hashtags-mode">
+                <div class="section-header">
+                    <h2>Generate Hashtags</h2>
+                    <p>Create relevant and trending hashtags for your content</p>
+                </div>
+
+                <form class="form-group" id="hashtagForm">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="hashtagTheme">Theme/Topic</label>
+                            <input type="text" id="hashtagTheme" placeholder="e.g., digital marketing" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="hashtagCount">Number of Hashtags</label>
+                            <input type="number" id="hashtagCount" min="5" max="30" value="10">
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="generateHashtags()">
+                            <i class="fas fa-hashtag"></i> Generate Hashtags
+                        </button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+
+                <div id="hashtagResults" class="results-container"></div>
+            </section>
+
+            <!-- Batch Mode -->
+            <section class="mode-section" data-mode="batch" id="batch-mode">
+                <div class="section-header">
+                    <h2>Batch Generate Content</h2>
+                    <p>Generate content for multiple themes at once</p>
+                </div>
+
+                <form class="form-group" id="batchForm">
+                    <div class="form-field full-width">
+                        <label for="batchThemes">Themes (comma-separated)</label>
+                        <textarea id="batchThemes" placeholder="e.g., sustainable fashion, digital marketing, AI technology" rows="4" required></textarea>
+                        <small>Enter one theme per line or separate with commas</small>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="batchContentType">Content Type</label>
+                        <select id="batchContentType">
+                            <option value="general_content">General Content</option>
+                            <option value="instagram_post">Instagram Post</option>
+                            <option value="twitter_post">Twitter/X Post</option>
+                            <option value="facebook_post">Facebook Post</option>
+                            <option value="linkedin_post">LinkedIn Post</option>
+                            <option value="tiktok_caption">TikTok Caption</option>
+                            <option value="email_subject">Email Subject Lines</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="generateBatch()">
+                            <i class="fas fa-cogs"></i> Generate Batch
+                        </button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+
+                <div id="batchResults" class="results-container"></div>
+            </section>
+        </main>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <p id="loadingText">Generating your content...</p>
+                <button class="btn btn-cancel" onclick="cancelGeneration()" id="cancelBtn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="btn btn-cancel" onclick="location.reload()" id="forceReloadBtn" style="display:none; margin-top: 10px; background: #ff6b6b;">
+                    <i class="fas fa-sync"></i> Force Reload
+                </button>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
